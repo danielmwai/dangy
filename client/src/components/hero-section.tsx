@@ -14,7 +14,7 @@ export default function HeroSection() {
       {/* Hero background image */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&h=1080" 
+          src="https://images.unsplash.com/photo-1594381898411-846e7d193883?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&h=1080" 
           alt="Women exercising in modern gym" 
           className="w-full h-full object-cover opacity-20" 
         />
@@ -43,7 +43,7 @@ export default function HeroSection() {
             <Button 
               variant="outline"
               size="lg"
-              className="border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-4 rounded-full font-semibold text-lg smooth-transition"
+              className="border-2 border-white text-white bg-white/20 hover:bg-white hover:text-primary px-8 py-4 rounded-full font-semibold text-lg smooth-transition backdrop-blur-sm shadow-lg"
               data-testid="button-watch-tour"
             >
               <Play className="mr-2 h-5 w-5" />

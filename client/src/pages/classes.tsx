@@ -54,7 +54,7 @@ export default function ClassesPage() {
       level: "Intermediate",
       instructor: "Sarah Johnson",
       maxCapacity: 20,
-      imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
+      imageUrl: "https://images.unsplash.com/photo-1535223289827-42f1e9199b69?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
       active: true
     },
     {
@@ -65,7 +65,7 @@ export default function ClassesPage() {
       level: "All Levels", 
       instructor: "Maya Patel",
       maxCapacity: 15,
-      imageUrl: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
+      imageUrl: "https://images.unsplash.com/photo-1548690312-3b6f0126e15c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
       active: true
     },
     {
@@ -76,7 +76,7 @@ export default function ClassesPage() {
       level: "Beginner",
       instructor: "Lisa Chen",
       maxCapacity: 12,
-      imageUrl: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
+      imageUrl: "https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
       active: true
     },
     {
@@ -203,7 +203,7 @@ export default function ClassesPage() {
                 >
                   <div className="relative">
                     <img 
-                      src={fitnessClass.imageUrl || "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400"} 
+                      src={fitnessClass.imageUrl || "https://images.unsplash.com/photo-1535223289827-42f1e9199b69?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400"} 
                       alt={fitnessClass.name}
                       className="w-full h-48 object-cover group-hover:scale-105 smooth-transition" 
                       data-testid={`img-class-${index}`}

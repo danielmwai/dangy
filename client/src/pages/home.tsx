@@ -13,16 +13,17 @@ import Footer from "@/components/footer";
 import ShoppingCart from "@/components/shopping-cart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import type { User, Membership, Order } from "@shared/schema";
 
 export default function Home() {
-  const { user } = useAuth();
+  const { user } = useAuth() as { user?: User };
   
-  const { data: membership } = useQuery({
+  const { data: membership } = useQuery<Membership | undefined>({
     queryKey: ["/api/membership/current"],
     enabled: !!user,
   });
 
-  const { data: orders } = useQuery({
+  const { data: orders } = useQuery<Order[] | undefined>({
     queryKey: ["/api/orders"],
     enabled: !!user,
   });
@@ -36,7 +37,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-foreground mb-2" data-testid="text-welcome">
-              Welcome back, {user?.firstName || 'Member'}!
+              {user ? `Welcome back, ${user?.firstName || 'Member'}!` : 'Welcome!'}
             </h1>
             <p className="text-muted-foreground">
               Ready to continue your fitness journey with the FeminaFit sisterhood?
@@ -51,7 +52,7 @@ export default function Home() {
                   Membership
                   {membership && (
                     <Badge variant="secondary" data-testid="badge-membership-status">
-                      {membership.status}
+                      {membership?.status}
                     </Badge>
                   )}
                 </CardTitle>
@@ -61,7 +62,7 @@ export default function Home() {
                   <div>
                     <p className="text-sm text-muted-foreground mb-2">Active until:</p>
                     <p className="font-semibold" data-testid="text-membership-end">
-                      {new Date(membership.endDate).toLocaleDateString()}
+                      {membership?.endDate ? new Date(membership.endDate).toLocaleDateString() : 'N/A'}
                     </p>
                   </div>
                 ) : (
@@ -82,7 +83,7 @@ export default function Home() {
                   <div>
                     <p className="text-sm text-muted-foreground mb-2">Last order:</p>
                     <p className="font-semibold" data-testid="text-last-order">
-                      KES {orders[0]?.total}
+                      KES {orders && orders[0] ? orders[0].total : '0'}
                     </p>
                   </div>
                 ) : (

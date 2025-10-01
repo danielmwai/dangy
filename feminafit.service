@@ -1,0 +1,15 @@
+[Unit]
+Description=FeminaFit Node.js Application
+After=network.target
+
+[Service]
+User=prexra
+Group=prexra
+WorkingDirectory=/home/prexra/apps/RETAIL_POS/FeminaFitClone
+EnvironmentFile=/home/prexra/apps/RETAIL_POS/FeminaFitClone/.env
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node dist/index.js
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

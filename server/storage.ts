@@ -94,6 +94,24 @@ export interface IStorage {
   subscribeNewsletter(subscription: InsertNewsletterSubscription): Promise<NewsletterSubscription>;
   getNewsletterSubscriptions(): Promise<NewsletterSubscription[]>;
 
+  // Admin methods
+  getAllUsers(): Promise<User[]>;
+  updateUserRole(userId: string, role: string): Promise<User | undefined>;
+  getAllFitnessClasses(): Promise<FitnessClass[]>;
+  updateFitnessClass(id: string, updates: Partial<InsertFitnessClass>): Promise<FitnessClass | undefined>;
+  deleteFitnessClass(id: string): Promise<void>;
+  getAllMembershipPlans(): Promise<MembershipPlan[]>;
+  updateMembershipPlan(id: string, updates: Partial<InsertMembershipPlan>): Promise<MembershipPlan | undefined>;
+  deleteMembershipPlan(id: string): Promise<void>;
+  getAllProducts(): Promise<Product[]>;
+  updateProduct(id: string, updates: Partial<InsertProduct>): Promise<Product | undefined>;
+  deleteProduct(id: string): Promise<void>;
+  getAllTestimonials(): Promise<Testimonial[]>;
+  updateTestimonial(id: string, updates: Partial<InsertTestimonial>): Promise<Testimonial | undefined>;
+  deleteTestimonial(id: string): Promise<void>;
+  getAllPages(): Promise<Page[]>;
+  deletePage(id: string): Promise<void>;
+
   // Contact
   createContactSubmission(submission: InsertContactSubmission): Promise<ContactSubmission>;
   getContactSubmissions(): Promise<ContactSubmission[]>;
@@ -261,6 +279,96 @@ export class DatabaseStorage implements IStorage {
   async getOrder(id: string): Promise<Order | undefined> {
     const [order] = await db.select().from(orders).where(eq(orders.id, id));
     return order;
+  }
+
+  // Admin methods - get all records regardless of status
+  async getAllUsers(): Promise<User[]> {
+    return await db.select().from(users);
+  }
+
+  async updateUserRole(userId: string, role: string): Promise<User | undefined> {
+    const [updatedUser] = await db
+      .update(users)
+      .set({ role })
+      .where(eq(users.id, userId))
+      .returning();
+    return updatedUser;
+  }
+
+  async getAllFitnessClasses(): Promise<FitnessClass[]> {
+    return await db.select().from(fitnessClasses);
+  }
+
+  async updateFitnessClass(id: string, updates: Partial<InsertFitnessClass>): Promise<FitnessClass | undefined> {
+    const [updatedClass] = await db
+      .update(fitnessClasses)
+      .set(updates)
+      .where(eq(fitnessClasses.id, id))
+      .returning();
+    return updatedClass;
+  }
+
+  async deleteFitnessClass(id: string): Promise<void> {
+    await db.delete(fitnessClasses).where(eq(fitnessClasses.id, id));
+  }
+
+  async getAllMembershipPlans(): Promise<MembershipPlan[]> {
+    return await db.select().from(membershipPlans);
+  }
+
+  async updateMembershipPlan(id: string, updates: Partial<InsertMembershipPlan>): Promise<MembershipPlan | undefined> {
+    const [updatedPlan] = await db
+      .update(membershipPlans)
+      .set(updates)
+      .where(eq(membershipPlans.id, id))
+      .returning();
+    return updatedPlan;
+  }
+
+  async deleteMembershipPlan(id: string): Promise<void> {
+    await db.delete(membershipPlans).where(eq(membershipPlans.id, id));
+  }
+
+  async getAllProducts(): Promise<Product[]> {
+    return await db.select().from(products);
+  }
+
+  async updateProduct(id: string, updates: Partial<InsertProduct>): Promise<Product | undefined> {
+    const [updatedProduct] = await db
+      .update(products)
+      .set(updates)
+      .where(eq(products.id, id))
+      .returning();
+    return updatedProduct;
+  }
+
+  async deleteProduct(id: string): Promise<void> {
+    await db.delete(products).where(eq(products.id, id));
+  }
+
+  async getAllTestimonials(): Promise<Testimonial[]> {
+    return await db.select().from(testimonials);
+  }
+
+  async updateTestimonial(id: string, updates: Partial<InsertTestimonial>): Promise<Testimonial | undefined> {
+    const [updatedTestimonial] = await db
+      .update(testimonials)
+      .set(updates)
+      .where(eq(testimonials.id, id))
+      .returning();
+    return updatedTestimonial;
+  }
+
+  async deleteTestimonial(id: string): Promise<void> {
+    await db.delete(testimonials).where(eq(testimonials.id, id));
+  }
+
+  async getAllPages(): Promise<Page[]> {
+    return await db.select().from(pages);
+  }
+
+  async deletePage(id: string): Promise<void> {
+    await db.delete(pages).where(eq(pages.id, id));
   }
 
   async getUserOrders(userId: string): Promise<Order[]> {

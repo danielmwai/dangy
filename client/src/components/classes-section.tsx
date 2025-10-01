@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Clock } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { FitnessClass } from "@shared/schema";
+import { useEffect, useState } from "react";
 
 export default function ClassesSection() {
   const { data: classes, isLoading } = useQuery<FitnessClass[]>({
@@ -18,7 +19,7 @@ export default function ClassesSection() {
       description: "High-intensity interval training to boost your metabolism and strength",
       duration: 45,
       level: "Intermediate",
-      imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250",
+      imageUrl: "https://images.unsplash.com/photo-1535223289827-42f1e9919769?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250",
     },
     {
       id: "2", 
@@ -26,7 +27,7 @@ export default function ClassesSection() {
       description: "Flowing movements to improve flexibility, balance, and mindfulness",
       duration: 60,
       level: "All Levels",
-      imageUrl: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250",
+      imageUrl: "https://images.unsplash.com/photo-1548690312-3b6f0126e15c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250",
     },
     {
       id: "3",
@@ -34,7 +35,7 @@ export default function ClassesSection() {
       description: "Build lean muscle and improve overall strength with guided workouts",
       duration: 50,
       level: "Beginner",
-      imageUrl: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250",
+      imageUrl: "https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250",
     }
   ];
 
@@ -47,6 +48,13 @@ export default function ClassesSection() {
       case 'advanced': return 'destructive';
       default: return 'outline';
     }
+  };
+
+  // Handle image loading errors
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.warn("Image failed to load, using fallback", e.currentTarget.src);
+    // You could set a fallback image here if needed
+    // e.currentTarget.src = "/path/to/fallback-image.png";
   };
 
   return (
@@ -88,10 +96,11 @@ export default function ClassesSection() {
                 data-testid={`card-class-${index}`}
               >
                 <img 
-                  src={fitnessClass.imageUrl} 
+                  src={fitnessClass.imageUrl || "/placeholder-class.jpg"} 
                   alt={`${fitnessClass.name} class`}
                   className="w-full h-48 object-cover group-hover:scale-105 smooth-transition" 
                   data-testid={`img-class-${index}`}
+                  onError={handleImageError}
                 />
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-3">

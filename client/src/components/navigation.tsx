@@ -11,11 +11,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import type { User as UserType } from "@shared/schema";
 
 export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [location] = useLocation();
-  const { isAuthenticated, user, logout, authProvider } = useUnifiedAuth();
+  const { isAuthenticated, user, logout, authProvider } = useUnifiedAuth() as { isAuthenticated: boolean; user?: UserType; logout: () => void; authProvider: string | null };
   const { getItemCount, toggleCart } = useCart();
 
   const navItems = [
@@ -91,7 +92,7 @@ export default function Navigation() {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="sm" data-testid="button-user-menu">
                     <User className="h-5 w-5 mr-2" />
-                    {user?.firstName || user?.email?.split('@')[0] || 'Member'}
+                    {user?.firstName || (user?.email && user.email.split('@')[0]) || 'Member'}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">

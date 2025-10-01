@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeminaFit - Women-Only Gym & Wellness Hub | Nairobi</title>
+    <meta name="description" content="Join FeminaFit, Nairobi's premier women-only gym and wellness hub. Located in Lana Plaza, offering fitness classes, spa services, and a supportive sisterhood community.">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                borderRadius: {
+                    lg: "var(--radius)",
+                    md: "calc(var(--radius) - 2px)",
+                    sm: "calc(var(--radius) - 4px)",
+                },
+                colors: {
+                    background: "var(--background)",
+                    foreground: "var(--foreground)",
+                    card: {
+                        DEFAULT: "var(--card)",
+                        foreground: "var(--card-foreground)",
+                    },
+                    popover: {
+                        DEFAULT: "var(--popover)",
+                        foreground: "var(--popover-foreground)",
+                    },
+                    primary: {
+                        DEFAULT: "var(--primary)",
+                        foreground: "var(--primary-foreground)",
+                    },
+                    secondary: {
+                        DEFAULT: "var(--secondary)",
+                        foreground: "var(--secondary-foreground)",
+                    },
+                    muted: {
+                        DEFAULT: "var(--muted)",
+                        foreground: "var(--muted-foreground)",
+                    },
+                    accent: {
+                        DEFAULT: "var(--accent)",
+                        foreground: "var(--accent-foreground)",
+                    },
+                    destructive: {
+                        DEFAULT: "var(--destructive)",
+                        foreground: "var(--destructive-foreground)",
+                    },
+                    border: "var(--border)",
+                    input: "var(--input)",
+                    ring: "var(--ring)",
+                },
+                fontFamily: {
+                    sans: ["var(--font-sans)"],
+                    serif: ["var(--font-serif)"],
+                }
+            },
+        }
+    };
+    </script>
+    
+    <style>
+        :root {
+            --background: hsl(330 15% 97%);
+            --foreground: hsl(345 10% 15%);
+            --card: hsl(0 0% 100%);
+            --card-foreground: hsl(345 10% 15%);
+            --popover: hsl(0 0% 100%);
+            --popover-foreground: hsl(345 10% 15%);
+            --primary: hsl(340 75% 55%);
+            --primary-foreground: hsl(0 0% 100%);
+            --secondary: hsl(340 15% 92%);
+            --secondary-foreground: hsl(345 10% 15%);
+            --muted: hsl(340 10% 95%);
+            --muted-foreground: hsl(345 5% 45%);
+            --accent: hsl(45 90% 65%);
+            --accent-foreground: hsl(345 10% 15%);
+            --destructive: hsl(0 75% 60%);
+            --destructive-foreground: hsl(0 0% 100%);
+            --border: hsl(340 20% 90%);
+            --input: hsl(340 20% 90%);
+            --ring: hsl(340 75% 55%);
+            --radius: 8px;
+            --font-sans: 'Inter', system-ui, sans-serif;
+            --font-serif: 'Georgia', serif;
+        }
+        
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: var(--font-sans);
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, hsl(340 75% 55%) 0%, hsl(320 65% 45%) 100%);
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: hsla(0, 0%, 100%, 0.1);
+        }
+        
+        .smooth-transition {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-background text-foreground">
+    <!-- @COMPONENT: Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-effect border-b border-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-primary">FeminaFit</h1>
+                </div>
+                
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home" class="text-foreground hover:text-primary smooth-transition px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="#about" class="text-foreground hover:text-primary smooth-transition px-3 py-2 rounded-md text-sm font-medium">About</a>
+                        <a href="#classes" class="text-foreground hover:text-primary smooth-transition px-3 py-2 rounded-md text-sm font-medium">Classes</a>
+                        <a href="#membership" class="text-foreground hover:text-primary smooth-transition px-3 py-2 rounded-md text-sm font-medium">Membership</a>
+                        <a href="#shop" class="text-foreground hover:text-primary smooth-transition px-3 py-2 rounded-md text-sm font-medium">Shop</a>
+                        <a href="#contact" class="text-foreground hover:text-primary smooth-transition px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                    </div>
+                </div>
+                
+                <div class="hidden md:block">
+                    <button class="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2 rounded-full smooth-transition font-medium">
+                        Join Now
+                    </button>
+                </div>
+                
+                <div class="md:hidden">
+                    <button type="button" class="text-foreground hover:text-primary focus:outline-none focus:text-primary">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- @END_COMPONENT: Navigation -->
+
+    <!-- @COMPONENT: Hero Section -->
+    <section id="home" class="hero-gradient min-h-screen flex items-center relative overflow-hidden">
+        <!-- Hero background image with modern fitness women -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&h=1080" alt="Women exercising in modern gym" class="w-full h-full object-cover opacity-20" />
+        </div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="text-center text-white">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight" data-bind="hero.title">
+                    <span class="block">Your space.</span>
+                    <span class="block">Your Health.</span>
+                    <span class="block text-accent">Your Sisterhood</span>
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto opacity-90" data-bind="hero.subtitle">
+                    Finally — a high-end gym designed only for women, like you.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="bg-white text-primary hover:bg-white/90 px-8 py-4 rounded-full font-semibold text-lg smooth-transition">
+                        Discover More
+                    </button>
+                    <button class="border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-4 rounded-full font-semibold text-lg smooth-transition">
+                        Watch Tour
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Hero Section -->
+
+    <!-- @COMPONENT: About Section -->
+    <section id="about" class="py-20 bg-background">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <!-- Women supporting each other in gym environment -->
+                    <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" alt="Women supporting each other during workout" class="rounded-2xl shadow-lg w-full" />
+                </div>
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-6">
+                        Feel Strong, Confident, and at Home at 
+                        <span class="text-primary">Femina Fit</span>
+                    </h2>
+                    <p class="text-lg text-muted-foreground mb-8 leading-relaxed" data-bind="about.description">
+                        At FeminaFit, you'll never feel out of place or judged. This is your private, women-only space in Lana Plaza, Nairobi — designed for your health, your comfort, and your goals. From energising workouts to spa-like recovery, everything here helps you feel your best inside and out.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <div class="bg-primary/10 p-2 rounded-full">
+                                <i class="fas fa-heart text-primary"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-foreground">Trainers Who Understand</h3>
+                                <p class="text-muted-foreground">Trainers who understand women's unique health needs to help you along your journey.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3">
+                            <div class="bg-primary/10 p-2 rounded-full">
+                                <i class="fas fa-dumbbell text-primary"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-foreground">Equipment Designed for You</h3>
+                                <p class="text-muted-foreground">Equipment and programs designed for your Body to help equip you for your journey towards life long health.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3">
+                            <div class="bg-primary/10 p-2 rounded-full">
+                                <i class="fas fa-users text-primary"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-foreground">Sisterhood Community</h3>
+                                <p class="text-muted-foreground">A sisterhood community to walk with and cheer you on every step of the way.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: About Section -->
+
+    <!-- @COMPONENT: Classes Section -->
+    <section id="classes" class="py-20 bg-muted/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-4">Our Classes</h2>
+                <p class="text-xl text-muted-foreground max-w-2xl mx-auto">
+                    Join empowering fitness classes designed specifically for women in a supportive environment
+                </p>
+            </div>
+            
+            <!-- @MAP: classes.map(class => ( -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-card rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl smooth-transition" data-mock="true">
+                    <!-- Fitness class in action -->
+                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250" alt="High-intensity fitness class with women" class="w-full h-48 object-cover group-hover:scale-105 smooth-transition" />
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-semibold text-foreground" data-bind="class.name">HIIT Training</h3>
+                            <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium" data-bind="class.level">Intermediate</span>
+                        </div>
+                        <p class="text-muted-foreground mb-4" data-bind="class.description">High-intensity interval training to boost your metabolism and strength</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2 text-sm text-muted-foreground">
+                                <i class="fas fa-clock"></i>
+                                <span data-bind="class.duration">45 min</span>
+                            </div>
+                            <button class="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-full font-medium smooth-transition" data-event="click:bookClass">
+                                Book Class
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-card rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl smooth-transition" data-mock="true">
+                    <!-- Yoga class with women -->
+                    <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250" alt="Women practicing yoga in serene studio" class="w-full h-48 object-cover group-hover:scale-105 smooth-transition" />
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-semibold text-foreground" data-bind="class.name">Yoga Flow</h3>
+                            <span class="bg-accent/20 text-accent-foreground px-3 py-1 rounded-full text-sm font-medium" data-bind="class.level">All Levels</span>
+                        </div>
+                        <p class="text-muted-foreground mb-4" data-bind="class.description">Flowing movements to improve flexibility, balance, and mindfulness</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2 text-sm text-muted-foreground">
+                                <i class="fas fa-clock"></i>
+                                <span data-bind="class.duration">60 min</span>
+                            </div>
+                            <button class="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-full font-medium smooth-transition" data-event="click:bookClass">
+                                Book Class
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-card rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl smooth-transition" data-mock="true">
+                    <!-- Strength training with women -->
+                    <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250" alt="Women doing strength training with weights" class="w-full h-48 object-cover group-hover:scale-105 smooth-transition" />
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-semibold text-foreground" data-bind="class.name">Strength Training</h3>
+                            <span class="bg-secondary/70 text-secondary-foreground px-3 py-1 rounded-full text-sm font-medium" data-bind="class.level">Beginner</span>
+                        </div>
+                        <p class="text-muted-foreground mb-4" data-bind="class.description">Build lean muscle and improve overall strength with guided workouts</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2 text-sm text-muted-foreground">
+                                <i class="fas fa-clock"></i>
+                                <span data-bind="class.duration">50 min</span>
+                            </div>
+                            <button class="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-full font-medium smooth-transition" data-event="click:bookClass">
+                                Book Class
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_MAP )) -->
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Classes Section -->
+
+    <!-- @COMPONENT: Testimonials Section -->
+    <section class="py-20 bg-background">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-4">Real Women. Real Stories.</h2>
+                <p class="text-xl text-muted-foreground">Hear from our amazing members!</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- @MAP: testimonials.map(testimonial => ( -->
+                <div class="bg-card p-6 rounded-2xl shadow-lg" data-mock="true">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-accent">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-foreground mb-4 italic" data-bind="testimonial.text">"Only women is so lovely! We want more of these gyms."</p>
+                    <div class="flex items-center">
+                        <!-- Portrait of happy woman after workout -->
+                        <img src="https://pixabay.com/get/g66eed9d85b85c26ded81e039c0ae7976ac875d0c50ddd86cb4b428c7856e38b78fa363a46633ea55d78f0dc22e5d31e315d8857b8dafcc8dcecf03af990d417c_1280.jpg" alt="Happy woman after workout session" class="w-12 h-12 rounded-full mr-3" />
+                        <div>
+                            <p class="font-semibold text-foreground" data-bind="testimonial.author">@zaytuna_muasya</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-card p-6 rounded-2xl shadow-lg" data-mock="true">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-accent">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-foreground mb-4 italic" data-bind="testimonial.text">"So healing!!! Waiting for the ladies to join me."</p>
+                    <div class="flex items-center">
+                        <!-- Another portrait of confident woman -->
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=60&h=60" alt="Confident woman in fitness attire" class="w-12 h-12 rounded-full mr-3" />
+                        <div>
+                            <p class="font-semibold text-foreground" data-bind="testimonial.author">@spicyefuru</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-card p-6 rounded-2xl shadow-lg" data-mock="true">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-accent">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-foreground mb-4 italic" data-bind="testimonial.text">"This place has transformed my relationship with fitness. The community here is incredible!"</p>
+                    <div class="flex items-center">
+                        <!-- Third portrait of empowered woman -->
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=60&h=60" alt="Empowered woman smiling confidently" class="w-12 h-12 rounded-full mr-3" />
+                        <div>
+                            <p class="font-semibold text-foreground" data-bind="testimonial.author">@memberfit24</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Testimonials Section -->
+
+    <!-- @COMPONENT: Membership Section -->
+    <section id="membership" class="py-20 bg-muted/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-4">It's Your Turn!</h2>
+                <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
+                    Join a growing community of Nairobi women transforming their health and confidence — all in a space created just for them.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- @MAP: membershipPlans.map(plan => ( -->
+                <div class="bg-card p-8 rounded-2xl shadow-lg text-center" data-mock="true">
+                    <h3 class="text-2xl font-bold text-foreground mb-4" data-bind="plan.name">Basic</h3>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold text-primary" data-bind="plan.price">KES 3,500</span>
+                        <span class="text-muted-foreground">/month</span>
+                    </div>
+                    <ul class="space-y-3 mb-8 text-left">
+                        <li class="flex items-center" data-bind="plan.features">
+                            <i class="fas fa-check text-primary mr-3"></i>
+                            <span>Gym access during off-peak hours</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-primary mr-3"></i>
+                            <span>Basic equipment usage</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-primary mr-3"></i>
+                            <span>Locker room access</span>
+                        </li>
+                    </ul>
+                    <button class="w-full bg-secondary hover:bg-secondary/80 text-secondary-foreground py-3 rounded-full font-semibold smooth-transition" data-event="click:selectPlan" data-implementation="Should trigger M-Pesa payment flow">
+                        Select Plan
+                    </button>
+                </div>
+                
+                <div class="bg-card p-8 rounded-2xl shadow-xl border-2 border-primary text-center relative" data-mock="true">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-medium">
+                        Most Popular
+                    </div>
+                    <h3 class="text-2xl font-bold text-foreground mb-4" data-bind="plan.name">Premium</h3>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold text-primary" data-bind="plan.price">KES 6,500</span>
+                        <span class="text-muted-foreground">/month</span>
+                    </div>
+                    <ul class="space-y-3 mb-8 text-left">
+                        <li class="flex items-center" data-bind="plan.features">
+                            <i class="fas fa-check text-primary mr-3"></i>
+                            <span>24/7 gym access</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-primary mr-3"></i>
+                            <span>All equipment + classes</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-primary mr-3"></i>
+                            <span>Personal training sessions</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-primary mr-3"></i>
+                            <span>Spa access</span>
+                        </li>
+                    </ul>
+                    <button class="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3 rounded-full font-semibold smooth-transition" data-event="click:selectPlan" data-implementation="Should trigger M-Pesa payment flow">
+                        Select Plan
+                    </button>
+                </div>
+                
+                <div class="bg-card p-8 rounded-2xl shadow-lg text-center" data-mock="true">
+                    <h3 class="text-2xl font-bold text-foreground mb-4" data-bind="plan.name">VIP</h3>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold text-primary" data-bind="plan.price">KES 9,500</span>
+                        <span class="text-muted-foreground">/month</span>
+                    </div>
+                    <ul class="space-y-3 mb-8 text-left">
+                        <li class="flex items-center" data-bind="plan.features">
+                            <i class="fas fa-check text-primary mr-3"></i>
+                            <span>All Premium benefits</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-primary mr-3"></i>
+                            <span>Nutrition consultations</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-primary mr-3"></i>
+                            <span>Wellness workshops</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-primary mr-3"></i>
+                            <span>Guest passes (2/month)</span>
+                        </li>
+                    </ul>
+                    <button class="w-full bg-secondary hover:bg-secondary/80 text-secondary-foreground py-3 rounded-full font-semibold smooth-transition" data-event="click:selectPlan" data-implementation="Should trigger M-Pesa payment flow">
+                        Select Plan
+                    </button>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Membership Section -->
+
+    <!-- @COMPONENT: Shop Section -->
+    <section id="shop" class="py-20 bg-background">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-4">FeminaFit Shop</h2>
+                <p class="text-xl text-muted-foreground">Premium fitness gear and wellness products for the modern woman</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- @MAP: products.map(product => ( -->
+                <div class="bg-card rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl smooth-transition" data-mock="true">
+                    <!-- Gym merchandise display -->
+                    <img src="https://pixabay.com/get/g5e8eb1f9b15e3a0603158276ee56d7a3c0dbb58c8587f504e9a64cadef144afcf64655ecc1bb8acece31c66d6eff2851a32775194afae470e2c6be4d8d298a6f_1280.jpg" alt="Premium fitness apparel and accessories" class="w-full h-48 object-cover group-hover:scale-105 smooth-transition" />
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-foreground mb-2" data-bind="product.name">FeminaFit Sports Bra</h3>
+                        <p class="text-muted-foreground text-sm mb-3" data-bind="product.description">High-support, moisture-wicking sports bra</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xl font-bold text-primary" data-bind="product.price">KES 2,500</span>
+                            <button class="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-full text-sm font-medium smooth-transition" data-event="click:addToCart">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-card rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl smooth-transition" data-mock="true">
+                    <!-- Wellness supplements display -->
+                    <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=200" alt="Premium wellness supplements and nutrition products" class="w-full h-48 object-cover group-hover:scale-105 smooth-transition" />
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-foreground mb-2" data-bind="product.name">Protein Powder</h3>
+                        <p class="text-muted-foreground text-sm mb-3" data-bind="product.description">Plant-based protein for women</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xl font-bold text-primary" data-bind="product.price">KES 3,800</span>
+                            <button class="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-full text-sm font-medium smooth-transition" data-event="click:addToCart">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-card rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl smooth-transition" data-mock="true">
+                    <!-- Gym equipment accessories -->
+                    <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=200" alt="Modern gym equipment and fitness accessories" class="w-full h-48 object-cover group-hover:scale-105 smooth-transition" />
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-foreground mb-2" data-bind="product.name">Resistance Bands Set</h3>
+                        <p class="text-muted-foreground text-sm mb-3" data-bind="product.description">Complete resistance training kit</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xl font-bold text-primary" data-bind="product.price">KES 1,800</span>
+                            <button class="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-full text-sm font-medium smooth-transition" data-event="click:addToCart">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-card rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl smooth-transition" data-mock="true">
+                    <!-- Wellness spa products -->
+                    <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=200" alt="Luxurious spa and wellness products" class="w-full h-48 object-cover group-hover:scale-105 smooth-transition" />
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-foreground mb-2" data-bind="product.name">Recovery Oil Set</h3>
+                        <p class="text-muted-foreground text-sm mb-3" data-bind="product.description">Aromatherapy oils for muscle recovery</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xl font-bold text-primary" data-bind="product.price">KES 2,200</span>
+                            <button class="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-full text-sm font-medium smooth-transition" data-event="click:addToCart">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+            
+            <div class="text-center mt-12">
+                <button class="bg-secondary hover:bg-secondary/80 text-secondary-foreground px-8 py-3 rounded-full font-semibold smooth-transition">
+                    View All Products
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Shop Section -->
+
+    <!-- @COMPONENT: Newsletter Section -->
+    <section class="py-20 hero-gradient">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">Join Our Community</h2>
+            <p class="text-xl text-white/90 mb-8">Get the latest updates on classes, events, and wellness tips</p>
+            
+            <form class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" data-implementation="Should integrate with email automation service">
+                <input 
+                    type="email" 
+                    placeholder="Enter your email address" 
+                    class="flex-1 px-6 py-3 rounded-full border-0 text-foreground focus:outline-none focus:ring-2 focus:ring-white"
+                    required
+                />
+                <button 
+                    type="submit" 
+                    class="bg-white text-primary hover:bg-white/90 px-8 py-3 rounded-full font-semibold smooth-transition"
+                    data-event="submit:subscribeNewsletter"
+                >
+                    Subscribe
+                </button>
+            </form>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Newsletter Section -->
+
+    <!-- @COMPONENT: Contact Section -->
+    <section id="contact" class="py-20 bg-background">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-8">Get in Touch</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-primary/10 p-3 rounded-full">
+                                <i class="fas fa-map-marker-alt text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-foreground mb-1">Location</h3>
+                                <p class="text-muted-foreground" data-bind="contact.address">3rd Floor, Lana Plaza<br>Nairobi, Kenya</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-primary/10 p-3 rounded-full">
+                                <i class="fas fa-phone text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-foreground mb-1">Phone</h3>
+                                <p class="text-muted-foreground" data-bind="contact.phone">+254116784310</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-primary/10 p-3 rounded-full">
+                                <i class="fas fa-envelope text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-foreground mb-1">Email</h3>
+                                <p class="text-muted-foreground" data-bind="contact.email">feminafit59@gmail.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-primary/10 p-3 rounded-full">
+                                <i class="fas fa-clock text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-foreground mb-1">Hours</h3>
+                                <p class="text-muted-foreground" data-bind="contact.hours">Mon-Fri: 5:00 AM - 10:00 PM<br>Weekends: 6:00 AM - 8:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <h3 class="font-semibold text-foreground mb-4">Follow Us</h3>
+                        <div class="flex space-x-4">
+                            <a href="https://www.facebook.com/share/1FKi2nGzZj/?mibextid=wwXIfr" class="bg-primary/10 hover:bg-primary hover:text-white text-primary p-3 rounded-full smooth-transition">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="https://www.instagram.com/feminafit2?igsh=MXhyYjkyYXhpeDNkZQ==&utm_source=qr" class="bg-primary/10 hover:bg-primary hover:text-white text-primary p-3 rounded-full smooth-transition">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://www.tiktok.com/@feminafitgym?_t=ZM-8yoKmRJyfZg&_r=1" class="bg-primary/10 hover:bg-primary hover:text-white text-primary p-3 rounded-full smooth-transition">
+                                <i class="fab fa-tiktok"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-card p-8 rounded-2xl shadow-lg">
+                    <h3 class="text-2xl font-bold text-foreground mb-6">Send us a Message</h3>
+                    <form class="space-y-6" data-implementation="Should integrate with CMS and send notifications">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-foreground mb-2">Name</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-foreground mb-2">Email</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+                        </div>
+                        
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-foreground mb-2">Phone</label>
+                            <input type="tel" id="phone" name="phone" class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-foreground mb-2">Message</label>
+                            <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3 rounded-lg font-semibold smooth-transition" data-event="submit:sendMessage">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Contact Section -->
+
+    <!-- @COMPONENT: Footer -->
+    <footer class="bg-foreground text-background py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <h3 class="text-2xl font-bold text-primary mb-4">FeminaFit</h3>
+                    <p class="text-background/80 mb-6 max-w-md">
+                        Join our community of strong women today. Your space. Your health. Your sisterhood.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/share/1FKi2nGzZj/?mibextid=wwXIfr" class="text-background/60 hover:text-primary smooth-transition">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="https://www.instagram.com/feminafit2?igsh=MXhyYjkyYXhpeDNkZQ==&utm_source=qr" class="text-background/60 hover:text-primary smooth-transition">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@feminafitgym?_t=ZM-8yoKmRJyfZg&_r=1" class="text-background/60 hover:text-primary smooth-transition">
+                            <i class="fab fa-tiktok text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-background mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#about" class="text-background/80 hover:text-primary smooth-transition">About</a></li>
+                        <li><a href="#classes" class="text-background/80 hover:text-primary smooth-transition">Classes</a></li>
+                        <li><a href="#membership" class="text-background/80 hover:text-primary smooth-transition">Membership</a></li>
+                        <li><a href="#shop" class="text-background/80 hover:text-primary smooth-transition">Shop</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-background mb-4">Contact</h4>
+                    <ul class="space-y-2 text-background/80">
+                        <li data-bind="contact.address">3rd Floor, Lana Plaza</li>
+                        <li data-bind="contact.phone">+254116784310</li>
+                        <li data-bind="contact.email">feminafit59@gmail.com</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-background/20 mt-8 pt-8 text-center">
+                <p class="text-background/60">&copy; 2025 FeminaFit. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <!-- @STATE: isCartOpen:boolean = false -->
+    <!-- @STATE: cartItems:array = [] -->
+    <!-- @STATE: selectedMembership:object = null -->
+    
+    <script>
+        (function() {
+            // TODO: Implement business logic, API calls, and state management
+            // TODO: Integrate with Strapi CMS for dynamic content
+            // TODO: Implement M-Pesa payment integration
+            // TODO: Add shopping cart functionality
+            // TODO: Implement user authentication
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // Navigation background on scroll
+            window.addEventListener('scroll', function() {
+                const nav = document.querySelector('nav');
+                if (window.scrollY > 100) {
+                    nav.style.background = 'rgba(255, 255, 255, 0.95)';
+                } else {
+                    nav.style.background = 'rgba(255, 255, 255, 0.1)';
+                }
+            });
+            
+            // Form submission handlers (placeholder)
+            document.addEventListener('submit', function(e) {
+                e.preventDefault();
+                console.log('Form submitted:', e.target);
+                // TODO: Implement actual form submission logic
+            });
+            
+            // Button click handlers (placeholder)
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('[data-event*="click:"]')) {
+                    const action = e.target.getAttribute('data-event').split(':')[1];
+                    console.log('Action triggered:', action);
+                    // TODO: Implement specific action handlers
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

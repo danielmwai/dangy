@@ -200,24 +200,6 @@ export default function SignUp() {
           </form>
 
           <div className="mt-6 text-center space-y-4">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
-              </div>
-            </div>
-
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={() => (window.location.href = "/api/login")}
-              data-testid="button-replit-signup"
-            >
-              Sign up with Replit
-            </Button>
-
             <p className="text-sm text-muted-foreground">
               Already have an account?{" "}
               <Link href="/signin" className="text-primary hover:underline" data-testid="link-signin">

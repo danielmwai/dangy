@@ -69,7 +69,7 @@ export default function ShoppingCart() {
                     data-testid={`cart-item-${item.id}`}
                   >
                     <img 
-                      src={item.imageUrl || "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80"} 
+                      src={item.imageUrl || "https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80"} 
                       alt={item.name}
                       className="w-16 h-16 object-cover rounded-lg" 
                       data-testid={`img-cart-item-${item.id}`}

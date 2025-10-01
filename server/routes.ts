@@ -1,7 +1,7 @@
-import type { Express } from "express";
+import type { Express, Request as ExpressRequest } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { getStorage } from "./storageInstance";
+import { isAuthenticated } from "./googleAuth";
 import { mpesaService } from "./services/mpesa";
 import { emailService } from "./services/email";
 import { 
@@ -12,27 +12,39 @@ import {
   insertNewsletterSubscriptionSchema,
   insertContactSubmissionSchema,
   signUpSchema,
-  signInSchema
+  signInSchema,
+  type User
 } from "@shared/schema";
 import { processSignUp, processSignIn, isEmailAuthenticated } from "./lib/emailAuth";
 import { createSessionToken } from "./lib/session";
 
+// Extend the Express Request type to include custom properties
+interface CustomRequest extends ExpressRequest {
+  emailUser?: User;
+  user?: User;
+  emailSession?: any;
+}
+
+// Admin authentication middleware
+const requireAdmin = async (req: CustomRequest, res: any, next: any) => {
+  // Check both Google auth and email auth for admin privileges
+  const googleUser = req.user;
+  const emailUser = req.emailUser;
+  
+  const user = googleUser || emailUser;
+  
+  if (!user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  
+  if (user.role !== 'admin') {
+    return res.status(403).json({ message: "Admin access required" });
+  }
+  
+  next();
+};
+
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Auth middleware
-  await setupAuth(app);
-
-  // Replit Auth routes
-  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      res.json(user);
-    } catch (error) {
-      console.error("Error fetching user:", error);
-      res.status(500).json({ message: "Failed to fetch user" });
-    }
-  });
-
   // Email/Password Authentication routes
   app.post('/api/auth/email/signup', async (req, res) => {
     try {
@@ -123,7 +135,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Content management routes
   app.get('/api/pages', async (req, res) => {
     try {
-      const pages = await storage.getPages();
+      const pages = await getStorage().getPages();
       res.json(pages);
     } catch (error) {
       console.error("Error fetching pages:", error);
@@ -133,7 +145,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/pages/:slug', async (req, res) => {
     try {
-      const page = await storage.getPage(req.params.slug);
+      const page = await getStorage().getPage(req.params.slug);
       if (!page) {
         return res.status(404).json({ message: "Page not found" });
       }
@@ -148,8 +160,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/testimonials', async (req, res) => {
     try {
       const testimonials = req.query.featured 
-        ? await storage.getFeaturedTestimonials()
-        : await storage.getTestimonials();
+        ? await getStorage().getFeaturedTestimonials()
+        : await getStorage().getTestimonials();
       res.json(testimonials);
     } catch (error) {
       console.error("Error fetching testimonials:", error);
@@ -157,10 +169,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/testimonials', isAuthenticated, async (req, res) => {
+  app.post('/api/testimonials', async (req, res) => {
+    // Allow both Google auth and email auth users to create testimonials
+    // But require some form of authentication
+    const isAuthenticated = req.isAuthenticated && req.isAuthenticated();
+    const isEmailAuthenticated = (req as CustomRequest).emailUser !== undefined;
+    
+    if (!isAuthenticated && !isEmailAuthenticated) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    
     try {
       const validatedData = insertTestimonialSchema.parse(req.body);
-      const testimonial = await storage.createTestimonial(validatedData);
+      const testimonial = await getStorage().createTestimonial(validatedData);
       res.json(testimonial);
     } catch (error) {
       console.error("Error creating testimonial:", error);
@@ -171,7 +192,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Fitness classes
   app.get('/api/classes', async (req, res) => {
     try {
-      const classes = await storage.getFitnessClasses();
+      const classes = await getStorage().getFitnessClasses();
       res.json(classes);
     } catch (error) {
       console.error("Error fetching classes:", error);
@@ -181,7 +202,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/classes/:id/schedules', async (req, res) => {
     try {
-      const schedules = await storage.getClassSchedules(req.params.id);
+      const schedules = await getStorage().getClassSchedules(req.params.id);
       res.json(schedules);
     } catch (error) {
       console.error("Error fetching class schedules:", error);
@@ -192,7 +213,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Membership plans
   app.get('/api/membership-plans', async (req, res) => {
     try {
-      const plans = await storage.getMembershipPlans();
+      const plans = await getStorage().getMembershipPlans();
       res.json(plans);
     } catch (error) {
       console.error("Error fetching membership plans:", error);
@@ -200,10 +221,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/membership/current', isAuthenticated, async (req: any, res) => {
+  app.get('/api/membership/current', async (req: any, res) => {
+    // Check for both Google auth and email auth
+    const userId = (req as CustomRequest).user?.id || (req as CustomRequest).emailUser?.id;
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    
     try {
-      const userId = req.user.claims.sub;
-      const membership = await storage.getUserMembership(userId);
+      const membership = await getStorage().getUserMembership(userId);
       res.json(membership);
     } catch (error) {
       console.error("Error fetching user membership:", error);
@@ -215,8 +241,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/products', async (req, res) => {
     try {
       const products = req.query.featured 
-        ? await storage.getFeaturedProducts()
-        : await storage.getProducts();
+        ? await getStorage().getFeaturedProducts()
+        : await getStorage().getProducts();
       res.json(products);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -226,7 +252,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/products/:id', async (req, res) => {
     try {
-      const product = await storage.getProduct(req.params.id);
+      const product = await getStorage().getProduct(req.params.id);
       if (!product) {
         return res.status(404).json({ message: "Product not found" });
       }
@@ -239,7 +265,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/categories', async (req, res) => {
     try {
-      const categories = await storage.getProductCategories();
+      const categories = await getStorage().getProductCategories();
       res.json(categories);
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -248,13 +274,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Orders
-  app.post('/api/orders', isAuthenticated, async (req: any, res) => {
+  app.post('/api/orders', async (req: any, res) => {
+    // Check for both Google auth and email auth
+    const userId = (req as CustomRequest).user?.id || (req as CustomRequest).emailUser?.id;
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    
     try {
-      const userId = req.user.claims.sub;
       const { items, shippingAddress, total } = req.body;
 
       // Create order
-      const order = await storage.createOrder({
+      const order = await getStorage().createOrder({
         userId,
         total,
         shippingAddress,
@@ -263,7 +294,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Add order items
       for (const item of items) {
-        await storage.addOrderItem({
+        await getStorage().addOrderItem({
           orderId: order.id,
           productId: item.productId,
           quantity: item.quantity,
@@ -278,10 +309,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/orders', isAuthenticated, async (req: any, res) => {
+  app.get('/api/orders', async (req: any, res) => {
+    // Check for both Google auth and email auth
+    const userId = (req as CustomRequest).user?.id || (req as CustomRequest).emailUser?.id;
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    
     try {
-      const userId = req.user.claims.sub;
-      const orders = await storage.getUserOrders(userId);
+      const orders = await getStorage().getUserOrders(userId);
       res.json(orders);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -299,7 +335,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Create payment record
-      const payment = await storage.createPayment({
+      const payment = await getStorage().createPayment({
         orderId,
         membershipId: membershipPlanId,
         amount,
@@ -324,7 +360,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           message: "Payment initiated. Please check your phone."
         });
       } else {
-        await storage.updatePaymentStatus(payment.id, 'failed');
+        await getStorage().updatePaymentStatus(payment.id, 'failed');
         res.status(400).json(result);
       }
     } catch (error) {
@@ -362,7 +398,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/payments/:id/status', async (req, res) => {
     try {
-      const payment = await storage.getPayment(req.params.id);
+      const payment = await getStorage().getPayment(req.params.id);
       if (!payment) {
         return res.status(404).json({ message: "Payment not found" });
       }
@@ -377,7 +413,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/newsletter/subscribe', async (req, res) => {
     try {
       const validatedData = insertNewsletterSubscriptionSchema.parse(req.body);
-      const subscription = await storage.subscribeNewsletter(validatedData);
+      const subscription = await getStorage().subscribeNewsletter(validatedData);
       
       // Send welcome email
       await emailService.sendEmail({
@@ -404,7 +440,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/contact', async (req, res) => {
     try {
       const validatedData = insertContactSubmissionSchema.parse(req.body);
-      const submission = await storage.createContactSubmission(validatedData);
+      const submission = await getStorage().createContactSubmission(validatedData);
       
       // Send notification email to admin
       await emailService.sendEmail({
@@ -426,6 +462,245 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Contact submission error:", error);
       res.status(500).json({ message: "Failed to send message" });
+    }
+  });
+
+  // Admin routes - Require admin privileges
+  app.get('/api/admin/users', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const users = await getStorage().getAllUsers();
+      res.json(users);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      res.status(500).json({ message: "Failed to fetch users" });
+    }
+  });
+
+  app.patch('/api/admin/users/:id', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const { id } = req.params;
+      const { role } = req.body;
+      
+      const updatedUser = await getStorage().updateUserRole(id, role);
+      res.json(updatedUser);
+    } catch (error) {
+      console.error("Error updating user:", error);
+      res.status(500).json({ message: "Failed to update user" });
+    }
+  });
+
+  // Admin fitness classes management
+  app.get('/api/admin/classes', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const classes = await getStorage().getAllFitnessClasses();
+      res.json(classes);
+    } catch (error) {
+      console.error("Error fetching fitness classes:", error);
+      res.status(500).json({ message: "Failed to fetch fitness classes" });
+    }
+  });
+
+  app.post('/api/admin/classes', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const newClass = await getStorage().createFitnessClass(req.body);
+      res.status(201).json(newClass);
+    } catch (error) {
+      console.error("Error creating fitness class:", error);
+      res.status(500).json({ message: "Failed to create fitness class" });
+    }
+  });
+
+  app.patch('/api/admin/classes/:id', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const { id } = req.params;
+      const updatedClass = await getStorage().updateFitnessClass(id, req.body);
+      res.json(updatedClass);
+    } catch (error) {
+      console.error("Error updating fitness class:", error);
+      res.status(500).json({ message: "Failed to update fitness class" });
+    }
+  });
+
+  app.delete('/api/admin/classes/:id', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const { id } = req.params;
+      await getStorage().deleteFitnessClass(id);
+      res.json({ message: "Fitness class deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting fitness class:", error);
+      res.status(500).json({ message: "Failed to delete fitness class" });
+    }
+  });
+
+  // Admin membership plans management
+  app.get('/api/admin/membership-plans', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const plans = await getStorage().getAllMembershipPlans();
+      res.json(plans);
+    } catch (error) {
+      console.error("Error fetching membership plans:", error);
+      res.status(500).json({ message: "Failed to fetch membership plans" });
+    }
+  });
+
+  app.post('/api/admin/membership-plans', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const newPlan = await getStorage().createMembershipPlan(req.body);
+      res.status(201).json(newPlan);
+    } catch (error) {
+      console.error("Error creating membership plan:", error);
+      res.status(500).json({ message: "Failed to create membership plan" });
+    }
+  });
+
+  app.patch('/api/admin/membership-plans/:id', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const { id } = req.params;
+      const updatedPlan = await getStorage().updateMembershipPlan(id, req.body);
+      res.json(updatedPlan);
+    } catch (error) {
+      console.error("Error updating membership plan:", error);
+      res.status(500).json({ message: "Failed to update membership plan" });
+    }
+  });
+
+  app.delete('/api/admin/membership-plans/:id', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const { id } = req.params;
+      await getStorage().deleteMembershipPlan(id);
+      res.json({ message: "Membership plan deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting membership plan:", error);
+      res.status(500).json({ message: "Failed to delete membership plan" });
+    }
+  });
+
+  // Admin products management
+  app.get('/api/admin/products', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const products = await getStorage().getAllProducts();
+      res.json(products);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      res.status(500).json({ message: "Failed to fetch products" });
+    }
+  });
+
+  app.post('/api/admin/products', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const newProduct = await getStorage().createProduct(req.body);
+      res.status(201).json(newProduct);
+    } catch (error) {
+      console.error("Error creating product:", error);
+      res.status(500).json({ message: "Failed to create product" });
+    }
+  });
+
+  app.patch('/api/admin/products/:id', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const { id } = req.params;
+      const updatedProduct = await getStorage().updateProduct(id, req.body);
+      res.json(updatedProduct);
+    } catch (error) {
+      console.error("Error updating product:", error);
+      res.status(500).json({ message: "Failed to update product" });
+    }
+  });
+
+  app.delete('/api/admin/products/:id', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const { id } = req.params;
+      await getStorage().deleteProduct(id);
+      res.json({ message: "Product deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      res.status(500).json({ message: "Failed to delete product" });
+    }
+  });
+
+  // Admin testimonials management
+  app.get('/api/admin/testimonials', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const testimonials = await getStorage().getAllTestimonials();
+      res.json(testimonials);
+    } catch (error) {
+      console.error("Error fetching testimonials:", error);
+      res.status(500).json({ message: "Failed to fetch testimonials" });
+    }
+  });
+
+  app.post('/api/admin/testimonials', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const newTestimonial = await getStorage().createTestimonial(req.body);
+      res.status(201).json(newTestimonial);
+    } catch (error) {
+      console.error("Error creating testimonial:", error);
+      res.status(500).json({ message: "Failed to create testimonial" });
+    }
+  });
+
+  app.patch('/api/admin/testimonials/:id', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const { id } = req.params;
+      const updatedTestimonial = await getStorage().updateTestimonial(id, req.body);
+      res.json(updatedTestimonial);
+    } catch (error) {
+      console.error("Error updating testimonial:", error);
+      res.status(500).json({ message: "Failed to update testimonial" });
+    }
+  });
+
+  app.delete('/api/admin/testimonials/:id', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const { id } = req.params;
+      await getStorage().deleteTestimonial(id);
+      res.json({ message: "Testimonial deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting testimonial:", error);
+      res.status(500).json({ message: "Failed to delete testimonial" });
+    }
+  });
+
+  // Admin pages management
+  app.get('/api/admin/pages', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const pages = await getStorage().getAllPages();
+      res.json(pages);
+    } catch (error) {
+      console.error("Error fetching pages:", error);
+      res.status(500).json({ message: "Failed to fetch pages" });
+    }
+  });
+
+  app.post('/api/admin/pages', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const newPage = await getStorage().createPage(req.body);
+      res.status(201).json(newPage);
+    } catch (error) {
+      console.error("Error creating page:", error);
+      res.status(500).json({ message: "Failed to create page" });
+    }
+  });
+
+  app.patch('/api/admin/pages/:id', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const { id } = req.params;
+      const updatedPage = await getStorage().updatePage(id, req.body);
+      res.json(updatedPage);
+    } catch (error) {
+      console.error("Error updating page:", error);
+      res.status(500).json({ message: "Failed to update page" });
+    }
+  });
+
+  app.delete('/api/admin/pages/:id', requireAdmin, async (req: CustomRequest, res) => {
+    try {
+      const { id } = req.params;
+      await getStorage().deletePage(id);
+      res.json({ message: "Page deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting page:", error);
+      res.status(500).json({ message: "Failed to delete page" });
     }
   });
 

@@ -13,6 +13,7 @@ import Classes from "@/pages/classes";
 import Checkout from "@/pages/checkout";
 import SignIn from "@/pages/signin";
 import SignUp from "@/pages/signup";
+import DynamicPage from "@/pages/dynamic-page";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -27,6 +28,10 @@ function Router() {
           <Route path="/classes" component={Classes} />
           <Route path="/signin" component={SignIn} />
           <Route path="/signup" component={SignUp} />
+          <Route path="/privacy" component={() => <DynamicPage />} />
+          <Route path="/terms" component={() => <DynamicPage />} />
+          <Route path="/refund" component={() => <DynamicPage />} />
+          <Route path="/faq" component={() => <DynamicPage />} />
         </>
       ) : (
         <>
@@ -37,6 +42,10 @@ function Router() {
           <Route path="/checkout" component={Checkout} />
           <Route path="/signin" component={SignIn} />
           <Route path="/signup" component={SignUp} />
+          <Route path="/privacy" component={() => <DynamicPage />} />
+          <Route path="/terms" component={() => <DynamicPage />} />
+          <Route path="/refund" component={() => <DynamicPage />} />
+          <Route path="/faq" component={() => <DynamicPage />} />
         </>
       )}
       <Route component={NotFound} />

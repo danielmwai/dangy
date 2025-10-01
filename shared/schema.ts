@@ -34,6 +34,7 @@ export const users = pgTable("users", {
   profileImageUrl: varchar("profile_image_url"),
   authProvider: varchar("auth_provider").default("replit"), // 'replit' or 'email'
   emailVerified: boolean("email_verified").default(false),
+  role: varchar("role").default("user"), // 'user' or 'admin'
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

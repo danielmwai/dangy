@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { isUnauthorizedError } from "@/lib/authUtils";
+import type { User as UserType } from "@shared/schema";
 
 const checkoutSchema = z.object({
   shippingAddress: z.object({
@@ -33,7 +34,7 @@ type CheckoutFormData = z.infer<typeof checkoutSchema>;
 export default function Checkout() {
   const [, setLocation] = useLocation();
   const { items, updateQuantity, removeItem, clearCart, getTotal } = useCart();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user } = useAuth() as { isAuthenticated: boolean; user?: UserType };
   const { toast } = useToast();
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
@@ -41,7 +42,7 @@ export default function Checkout() {
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
       shippingAddress: {
-        fullName: user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() : '',
+        fullName: user ? `${user?.firstName || ''} ${user?.lastName || ''}`.trim() : '',
         phone: '',
         address: '',
         city: 'Nairobi',
@@ -237,7 +238,7 @@ export default function Checkout() {
                   {items.map((item) => (
                     <div key={item.id} className="flex items-center gap-4 py-3" data-testid={`item-${item.id}`}>
                       <img 
-                        src={item.imageUrl || "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100"} 
+                        src={item.imageUrl || "https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100"} 
                         alt={item.name}
                         className="w-16 h-16 object-cover rounded-lg" 
                         data-testid={`img-item-${item.id}`}

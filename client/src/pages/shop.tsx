@@ -147,7 +147,7 @@ export default function Shop() {
                 >
                   <div className="relative">
                     <img 
-                      src={product.imageUrl || "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"} 
+                      src={product.imageUrl || "https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"} 
                       alt={product.name}
                       className="w-full h-64 object-cover group-hover:scale-105 smooth-transition" 
                       data-testid={`img-product-${index}`}
@@ -179,14 +179,14 @@ export default function Shop() {
                         </span>
                         {product.stock !== undefined && (
                           <span className="text-xs text-muted-foreground">
-                            {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+                            {product.stock && product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
                           </span>
                         )}
                       </div>
                       
                       <Button 
                         onClick={() => handleAddToCart(product)}
-                        disabled={product.stock === 0}
+                        disabled={product.stock === 0 || product.stock === null || product.stock === undefined}
                         size="sm"
                         data-testid={`button-add-to-cart-${index}`}
                       >

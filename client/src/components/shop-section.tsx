@@ -19,28 +19,28 @@ export default function ShopSection() {
       name: "FeminaFit Sports Bra",
       description: "High-support, moisture-wicking sports bra",
       price: "2500",
-      imageUrl: "https://images.unsplash.com/photo-1506629905607-45848c21bc27?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200",
+      imageUrl: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=200",
     },
     {
       id: "2", 
       name: "Protein Powder",
       description: "Plant-based protein for women",
       price: "3800",
-      imageUrl: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200",
+      imageUrl: "https://images.unsplash.com/photo-1598023696455-1063541048a8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=200",
     },
     {
       id: "3",
       name: "Resistance Bands Set",
       description: "Complete resistance training kit", 
       price: "1800",
-      imageUrl: "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200",
+      imageUrl: "https://images.unsplash.com/photo-1534024483631-cd9f6fc41e70?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=200",
     },
     {
       id: "4",
       name: "Recovery Oil Set",
       description: "Aromatherapy oils for muscle recovery",
       price: "2200", 
-      imageUrl: "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200",
+      imageUrl: "https://images.unsplash.com/photo-1600353065049-6d46a326b1ef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=200",
     }
   ];
 
@@ -90,7 +90,7 @@ export default function ShopSection() {
                 data-testid={`card-product-${index}`}
               >
                 <img 
-                  src={product.imageUrl || "https://images.unsplash.com/photo-1506629905607-45848c21bc27?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"} 
+                  src={product.imageUrl || "https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=200"} 
                   alt={product.name}
                   className="w-full h-48 object-cover group-hover:scale-105 smooth-transition" 
                   data-testid={`img-product-${index}`}
