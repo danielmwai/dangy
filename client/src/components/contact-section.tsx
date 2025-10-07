@@ -62,7 +62,7 @@ export default function ContactSection() {
     {
       icon: MapPin,
       title: "Location",
-      content: "3rd Floor, Lana Plaza\nNairobi, Kenya",
+      content: "3rd Floor, Lana Plaza\nOloitoktok Road, Kileleshwa\nNairobi, Kenya",
       href: null
     },
     {
@@ -252,6 +252,41 @@ export default function ContactSection() {
               </form>
             </CardContent>
           </Card>
+        </div>
+        
+        {/* Map Section */}
+        <div className="mt-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6 text-center" data-testid="text-map-title">
+            Find Us
+          </h2>
+          <div className="w-full h-[450px] rounded-lg overflow-hidden shadow-lg border-2 border-border">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.8159!2d36.81667!3d-1.28333!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMcKwMTYnNTkuOSJTIDM2wrA0OScwMC4wIkU!5e0!3m2!1sen!2s!4v1234567890123!5m2!1sen!2s"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="FeminaFit Gym Location - Lana Plaza, Oloitoktok Road, Kileleshwa, Nairobi"
+              data-testid="iframe-location-map"
+            />
+          </div>
+          <div className="mt-6 text-center">
+            <p className="text-muted-foreground mb-2">
+              <strong className="text-foreground">Address:</strong> 3rd Floor, Lana Plaza, Oloitoktok Road, Kileleshwa, Nairobi, Kenya
+            </p>
+            <a
+              href="https://www.google.com/maps/place/Lana+Plaza,+Oloitoktok+Road,+Kileleshwa,+Nairobi,+Kenya/@-1.28333,36.81667"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center text-primary hover:underline font-semibold"
+              data-testid="link-get-directions"
+            >
+              <MapPin className="h-4 w-4 mr-2" />
+              Get Directions
+            </a>
+          </div>
         </div>
       </div>
     </section>
