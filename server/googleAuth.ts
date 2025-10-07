@@ -1,19 +1,16 @@
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import session from "express-session";
-import connectPg from "connect-pg-simple";
+import createMemoryStore from "memorystore";
 import { storage } from "./storage";
 
 // Google OAuth configuration
 export function setupGoogleAuth(app: any) {
   // Session setup
   const sessionTtl = 7 * 24 * 60 * 60 * 1000; // 1 week
-  const pgStore = connectPg(session);
-  const sessionStore = new pgStore({
-    conString: process.env.DATABASE_URL,
-    createTableIfMissing: false,
-    ttl: sessionTtl,
-    tableName: "sessions",
+  const MemoryStore = createMemoryStore(session);
+  const sessionStore = new MemoryStore({
+    checkPeriod: sessionTtl,
   });
 
   app.use(session({
