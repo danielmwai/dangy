@@ -1,0 +1,17 @@
+// This script would be used after creating an admin user
+// to populate initial content through the PayloadCMS API
+
+console.log("Once you've created an admin user through the PayloadCMS admin panel,");
+console.log("you can use this script to populate initial content.");
+console.log("");
+console.log("Steps:");
+console.log("1. Log in to the admin panel at http://localhost:5000/admin");
+console.log("2. Navigate to the Collections section");
+console.log("3. Add initial content for:");
+console.log("   - Pages (About, Contact, Privacy Policy, etc.)");
+console.log("   - Fitness Classes");
+console.log("   - Membership Plans");
+console.log("   - Products");
+console.log("   - Testimonials");
+console.log("");
+console.log("The database is now ready for you to populate through the admin interface.");
