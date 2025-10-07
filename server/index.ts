@@ -3,8 +3,7 @@ import cookieParser from "cookie-parser";
 import { registerRoutes } from "./routes";
 import { setupGoogleAuth } from "./googleAuth";
 import { setupVite, serveStatic, log } from "./vite";
-import payload from 'payload';
-import { PayloadStorage } from './payloadStorage';
+import { storage } from './storage';
 import { setStorage } from './storageInstance';
 import dotenv from 'dotenv';
 
@@ -16,19 +15,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// Initialize Payload
-await payload.init({
-  secret: process.env.PAYLOAD_SECRET || 'default-dev-secret',
-  express: app,
-  config: (await import('../payload.config.ts')).default,
-  onInit: async () => {
-    payload.logger.info(`Payload Admin URL: ${payload.getAdminURL()}`);
-  },
-});
-
-// Initialize Payload-based storage
-const payloadStorage = new PayloadStorage();
-setStorage(payloadStorage);
+// Initialize Database storage
+setStorage(storage as any);
 
 // Set up Google authentication
 setupGoogleAuth(app);

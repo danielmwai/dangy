@@ -1,186 +1,185 @@
 import { sql, relations } from "drizzle-orm";
 import {
   index,
-  jsonb,
-  pgTable,
+  sqliteTable,
   text,
-  varchar,
-  timestamp,
   integer,
-  decimal,
-  boolean,
-} from "drizzle-orm/pg-core";
+  real,
+} from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import { nanoid } from "nanoid";
 
 // Session storage table (required for auth)
-export const sessions = pgTable(
+export const sessions = sqliteTable(
   "sessions",
   {
-    sid: varchar("sid").primaryKey(),
-    sess: jsonb("sess").notNull(),
-    expire: timestamp("expire").notNull(),
+    sid: text("sid").primaryKey(),
+    sess: text("sess").notNull(),
+    expire: integer("expire").notNull(),
   },
-  (table) => [index("IDX_session_expire").on(table.expire)],
+  (table) => ({
+    expireIdx: index("IDX_session_expire").on(table.expire),
+  })
 );
 
 // User storage table (supports both Replit Auth and email/password auth)
-export const users = pgTable("users", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  email: varchar("email").unique(),
-  password: varchar("password"), // For email/password authentication
-  firstName: varchar("first_name"),
-  lastName: varchar("last_name"),
-  profileImageUrl: varchar("profile_image_url"),
-  authProvider: varchar("auth_provider").default("replit"), // 'replit' or 'email'
-  emailVerified: boolean("email_verified").default(false),
-  role: varchar("role").default("user"), // 'user' or 'admin'
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+export const users = sqliteTable("users", {
+  id: text("id").primaryKey().$defaultFn(() => nanoid()),
+  email: text("email").unique(),
+  password: text("password"), // For email/password authentication
+  firstName: text("first_name"),
+  lastName: text("last_name"),
+  profileImageUrl: text("profile_image_url"),
+  authProvider: text("auth_provider").default("replit"), // 'replit' or 'email'
+  emailVerified: integer("email_verified", { mode: 'boolean' }).default(false),
+  role: text("role").default("user"), // 'user' or 'admin'
+  createdAt: integer("created_at").$defaultFn(() => Date.now()),
+  updatedAt: integer("updated_at").$defaultFn(() => Date.now()),
 });
 
 // Content management tables
-export const pages = pgTable("pages", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  slug: varchar("slug").notNull().unique(),
+export const pages = sqliteTable("pages", {
+  id: text("id").primaryKey().$defaultFn(() => nanoid()),
+  slug: text("slug").notNull().unique(),
   title: text("title").notNull(),
-  content: jsonb("content").notNull(),
+  content: text("content").notNull(), // JSON string
   metaDescription: text("meta_description"),
-  published: boolean("published").default(true),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+  published: integer("published", { mode: 'boolean' }).default(true),
+  createdAt: integer("created_at").$defaultFn(() => Date.now()),
+  updatedAt: integer("updated_at").$defaultFn(() => Date.now()),
 });
 
-export const testimonials = pgTable("testimonials", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+export const testimonials = sqliteTable("testimonials", {
+  id: text("id").primaryKey().$defaultFn(() => nanoid()),
   name: text("name").notNull(),
   username: text("username"),
   text: text("text").notNull(),
   rating: integer("rating").notNull().default(5),
   imageUrl: text("image_url"),
-  featured: boolean("featured").default(false),
-  createdAt: timestamp("created_at").defaultNow(),
+  featured: integer("featured", { mode: 'boolean' }).default(false),
+  createdAt: integer("created_at").$defaultFn(() => Date.now()),
 });
 
 // Fitness classes
-export const fitnessClasses = pgTable("fitness_classes", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+export const fitnessClasses = sqliteTable("fitness_classes", {
+  id: text("id").primaryKey().$defaultFn(() => nanoid()),
   name: text("name").notNull(),
   description: text("description").notNull(),
   duration: integer("duration").notNull(), // in minutes
-  level: varchar("level").notNull(), // beginner, intermediate, advanced
+  level: text("level").notNull(), // beginner, intermediate, advanced
   instructor: text("instructor"),
   maxCapacity: integer("max_capacity").default(20),
   imageUrl: text("image_url"),
-  active: boolean("active").default(true),
-  createdAt: timestamp("created_at").defaultNow(),
+  active: integer("active", { mode: 'boolean' }).default(true),
+  createdAt: integer("created_at").$defaultFn(() => Date.now()),
 });
 
-export const classSchedules = pgTable("class_schedules", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  classId: varchar("class_id").references(() => fitnessClasses.id),
+export const classSchedules = sqliteTable("class_schedules", {
+  id: text("id").primaryKey().$defaultFn(() => nanoid()),
+  classId: text("class_id").references(() => fitnessClasses.id),
   dayOfWeek: integer("day_of_week").notNull(), // 0-6
   startTime: text("start_time").notNull(), // HH:MM format
   endTime: text("end_time").notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
+  createdAt: integer("created_at").$defaultFn(() => Date.now()),
 });
 
 // Membership plans
-export const membershipPlans = pgTable("membership_plans", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+export const membershipPlans = sqliteTable("membership_plans", {
+  id: text("id").primaryKey().$defaultFn(() => nanoid()),
   name: text("name").notNull(),
   description: text("description").notNull(),
-  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
+  price: real("price").notNull(),
   duration: integer("duration").notNull(), // in days
-  features: jsonb("features").notNull(), // array of features
-  popular: boolean("popular").default(false),
-  active: boolean("active").default(true),
-  createdAt: timestamp("created_at").defaultNow(),
+  features: text("features").notNull(), // JSON array of features
+  popular: integer("popular", { mode: 'boolean' }).default(false),
+  active: integer("active", { mode: 'boolean' }).default(true),
+  createdAt: integer("created_at").$defaultFn(() => Date.now()),
 });
 
-export const memberships = pgTable("memberships", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  userId: varchar("user_id").references(() => users.id),
-  planId: varchar("plan_id").references(() => membershipPlans.id),
-  startDate: timestamp("start_date").notNull(),
-  endDate: timestamp("end_date").notNull(),
-  status: varchar("status").notNull().default("active"), // active, expired, cancelled
-  createdAt: timestamp("created_at").defaultNow(),
+export const memberships = sqliteTable("memberships", {
+  id: text("id").primaryKey().$defaultFn(() => nanoid()),
+  userId: text("user_id").references(() => users.id),
+  planId: text("plan_id").references(() => membershipPlans.id),
+  startDate: integer("start_date").notNull(),
+  endDate: integer("end_date").notNull(),
+  status: text("status").notNull().default("active"), // active, expired, cancelled
+  createdAt: integer("created_at").$defaultFn(() => Date.now()),
 });
 
 // Products and e-commerce
-export const productCategories = pgTable("product_categories", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+export const productCategories = sqliteTable("product_categories", {
+  id: text("id").primaryKey().$defaultFn(() => nanoid()),
   name: text("name").notNull(),
   description: text("description"),
   imageUrl: text("image_url"),
-  active: boolean("active").default(true),
+  active: integer("active", { mode: 'boolean' }).default(true),
 });
 
-export const products = pgTable("products", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+export const products = sqliteTable("products", {
+  id: text("id").primaryKey().$defaultFn(() => nanoid()),
   name: text("name").notNull(),
   description: text("description").notNull(),
-  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
-  categoryId: varchar("category_id").references(() => productCategories.id),
+  price: real("price").notNull(),
+  categoryId: text("category_id").references(() => productCategories.id),
   imageUrl: text("image_url"),
   stock: integer("stock").default(0),
-  featured: boolean("featured").default(false),
-  active: boolean("active").default(true),
-  createdAt: timestamp("created_at").defaultNow(),
+  featured: integer("featured", { mode: 'boolean' }).default(false),
+  active: integer("active", { mode: 'boolean' }).default(true),
+  createdAt: integer("created_at").$defaultFn(() => Date.now()),
 });
 
-export const orders = pgTable("orders", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  userId: varchar("user_id").references(() => users.id),
-  total: decimal("total", { precision: 10, scale: 2 }).notNull(),
-  status: varchar("status").notNull().default("pending"), // pending, paid, shipped, delivered, cancelled
-  shippingAddress: jsonb("shipping_address"),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+export const orders = sqliteTable("orders", {
+  id: text("id").primaryKey().$defaultFn(() => nanoid()),
+  userId: text("user_id").references(() => users.id),
+  total: real("total").notNull(),
+  status: text("status").notNull().default("pending"), // pending, paid, shipped, delivered, cancelled
+  shippingAddress: text("shipping_address"), // JSON string
+  createdAt: integer("created_at").$defaultFn(() => Date.now()),
+  updatedAt: integer("updated_at").$defaultFn(() => Date.now()),
 });
 
-export const orderItems = pgTable("order_items", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  orderId: varchar("order_id").references(() => orders.id),
-  productId: varchar("product_id").references(() => products.id),
+export const orderItems = sqliteTable("order_items", {
+  id: text("id").primaryKey().$defaultFn(() => nanoid()),
+  orderId: text("order_id").references(() => orders.id),
+  productId: text("product_id").references(() => products.id),
   quantity: integer("quantity").notNull(),
-  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
+  price: real("price").notNull(),
 });
 
 // Payment transactions
-export const payments = pgTable("payments", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  orderId: varchar("order_id").references(() => orders.id),
-  membershipId: varchar("membership_id").references(() => memberships.id),
-  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
-  currency: varchar("currency").default("KES"),
-  method: varchar("method").notNull(), // mpesa, card, cash
-  status: varchar("status").notNull().default("pending"), // pending, completed, failed, refunded
+export const payments = sqliteTable("payments", {
+  id: text("id").primaryKey().$defaultFn(() => nanoid()),
+  orderId: text("order_id").references(() => orders.id),
+  membershipId: text("membership_id").references(() => memberships.id),
+  amount: real("amount").notNull(),
+  currency: text("currency").default("KES"),
+  method: text("method").notNull(), // mpesa, card, cash
+  status: text("status").notNull().default("pending"), // pending, completed, failed, refunded
   transactionId: text("transaction_id"),
   phoneNumber: text("phone_number"),
-  mpesaData: jsonb("mpesa_data"),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+  mpesaData: text("mpesa_data"), // JSON string
+  createdAt: integer("created_at").$defaultFn(() => Date.now()),
+  updatedAt: integer("updated_at").$defaultFn(() => Date.now()),
 });
 
 // Newsletter subscriptions
-export const newsletterSubscriptions = pgTable("newsletter_subscriptions", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+export const newsletterSubscriptions = sqliteTable("newsletter_subscriptions", {
+  id: text("id").primaryKey().$defaultFn(() => nanoid()),
   email: text("email").notNull().unique(),
-  active: boolean("active").default(true),
-  createdAt: timestamp("created_at").defaultNow(),
+  active: integer("active", { mode: 'boolean' }).default(true),
+  createdAt: integer("created_at").$defaultFn(() => Date.now()),
 });
 
 // Contact form submissions
-export const contactSubmissions = pgTable("contact_submissions", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+export const contactSubmissions = sqliteTable("contact_submissions", {
+  id: text("id").primaryKey().$defaultFn(() => nanoid()),
   name: text("name").notNull(),
   email: text("email").notNull(),
   phone: text("phone"),
   message: text("message").notNull(),
-  status: varchar("status").default("new"), // new, responded, closed
-  createdAt: timestamp("created_at").defaultNow(),
+  status: text("status").default("new"), // new, responded, closed
+  createdAt: integer("created_at").$defaultFn(() => Date.now()),
 });
 
 // Relations

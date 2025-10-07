@@ -1,18 +1,10 @@
-import pg from 'pg';
-const { Pool } = pg;
-import { drizzle } from 'drizzle-orm/node-postgres';
-import ws from "ws";
+import Database from 'better-sqlite3';
+import { drizzle } from 'drizzle-orm/better-sqlite3';
 import * as schema from "@shared/schema";
 import dotenv from 'dotenv';
 
 // Load environment variables from .env file
 dotenv.config();
 
-if (!process.env.DATABASE_URL) {
-  throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
-  );
-}
-
-export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-export const db = drizzle({ client: pool, schema });
+const sqlite = new Database('feminafit.db');
+export const db = drizzle(sqlite, { schema });
